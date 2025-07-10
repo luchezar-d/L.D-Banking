@@ -11,47 +11,23 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white shadow-md py-4 px-8 flex justify-between items-center">
-      <div className="text-2xl font-bold text-purple-700">
-        L.D Banking
-      </div>
-      <div className="space-x-6">
-        <Link 
-          to="/" 
-          className="text-gray-700 hover:text-purple-700 transition"
-        >
-          Home
-        </Link>
+    <nav className="flex justify-between items-center py-4 px-8 border-b border-gray-200">
+      <Link to="/" className="text-purple-700 font-bold text-xl">L.D Banking</Link>
+
+      <div className="space-x-4">
+        <Link to="/">Home</Link>
+        {!isLoggedIn && <Link to="/login">Login</Link>}
         {isLoggedIn && (
           <>
-            <Link 
-              to="/apply" 
-              className="text-gray-700 hover:text-purple-700 transition"
+            <Link to="/apply">Apply</Link>
+            <Link to="/applications">Applications</Link>
+            <span 
+              className="cursor-pointer text-red-600"
+              onClick={handleLogout}
             >
-              Apply
-            </Link>
-            <Link 
-              to="/applications" 
-              className="text-gray-700 hover:text-purple-700 transition"
-            >
-              Applications
-            </Link>
+              Logout
+            </span>
           </>
-        )}
-        {!isLoggedIn ? (
-          <Link 
-            to="/login" 
-            className="text-purple-700 hover:text-purple-900 font-semibold transition"
-          >
-            Login
-          </Link>
-        ) : (
-          <span 
-            className="cursor-pointer text-red-600 hover:text-red-800 font-semibold transition"
-            onClick={handleLogout}
-          >
-            Logout
-          </span>
         )}
       </div>
     </nav>
