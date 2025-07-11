@@ -7,13 +7,18 @@ export default function Apply() {
     email: '',
     city: '',
     postalCode: '',
-    productType: 'Loan'
+    productType: 'Loan',
+    amount: ''
   });
 
   const [message, setMessage] = useState(<></>);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type } = e.target;
+    setForm({
+      ...form,
+      [name]: name === 'amount' ? Number(value) : value
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -47,6 +52,7 @@ export default function Apply() {
           <option>Flash Credit</option>
           <option>Credit Card</option>
         </select><br /><br />
+        <input name="amount" type="number" placeholder="Amount" onChange={handleChange} /><br /><br />
         <button type="submit">Submit</button>
       </form>
       <div style={{ marginTop: '1rem' }}>{message}</div>

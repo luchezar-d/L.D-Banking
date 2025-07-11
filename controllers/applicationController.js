@@ -2,14 +2,34 @@ import Application from '../models/Application.js';
 import { sendOfferEmail } from '../utils/email.js';
 import { createSalesforceRecord } from '../utils/salesforce.js';
 import { runKycCheck } from '../utils/kyc.js';
+import { publishLoanEvent } from '../utils/awsEventBridge.js';
 
 export const applyForProduct = async (req, res) => {
     try {
-        const app = new Application(req.body);
+        // Validate required fields
+        const requiredFields = ['fullName', 'email', 'city', 'postalCode', 'productType', 'amount'];
+        for (const field of requiredFields) {
+            if (!req.body[field]) {
+                return res.status(400).json({ error: `Missing required field: ${field}` });
+            }
+        }
+
+        // Always set status to "Offer Made" on creation
+        const app = new Application({
+            ...req.body,
+            status: "Offer Made"
+        });
         await app.save();
 
+        // Call Salesforce & email logic
         await createSalesforceRecord(app);
         await sendOfferEmail(app);
+
+        // Publish event to AWS EventBridge with full payload
+        await publishLoanEvent("LoanOfferMade", {
+            applicationId: app._id,
+            ...app.toObject() // spread all fields (fullName, email, city, etc)
+        });
 
         // Generate the offer URL
         const offerUrl = `http://localhost:5173/offer/${app._id}`;
@@ -77,4 +97,3 @@ export const getApplicationById = async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch application' });
     }
 };
-

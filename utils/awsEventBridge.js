@@ -1,4 +1,3 @@
-
 import { EventBridgeClient, PutEventsCommand } from "@aws-sdk/client-eventbridge";
 import dotenv from 'dotenv';
 dotenv.config();
@@ -11,27 +10,25 @@ const client = new EventBridgeClient({
   }
 });
 
-const input = {
-  Entries: [
-    {
-      Source: "loan.app",
-      DetailType: "LoanOfferMade",
-      Detail: JSON.stringify({
-        loanId: "abc123",
-        amount: 5000,
-        status: "Offer Made"
-      }),
-      EventBusName: "LoanEventsBus"
-    }
-  ]
-};
+export async function publishLoanEvent(detailType, data) {
+  const input = {
+    Entries: [
+      {
+        Source: "loan.app",
+        DetailType: detailType,
+        Detail: JSON.stringify(data),
+        EventBusName: "LoanEventsBus"
+      }
+    ]
+  };
 
-(async () => {
   try {
     const command = new PutEventsCommand(input);
     const response = await client.send(command);
-    console.log("✅ Published event:", JSON.stringify(response, null, 2));
+    console.log("✅ Published event to EventBridge:", JSON.stringify(response, null, 2));
+    return response;
   } catch (err) {
     console.error("❌ Failed to publish event:", err);
+    throw err;
   }
-})();
+}
