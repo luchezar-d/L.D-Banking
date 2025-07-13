@@ -8,6 +8,7 @@ A full-stack banking application with:
 
 ---
 
+
 ## Features
 - Users can apply for banking products (Loan, Flash Credit, Credit Card) via a web form.
 - All applications are stored in MongoDB with required fields: `fullName`, `email`, `city`, `postalCode`, `productType`, `amount`, `status`, `kycResult`, `createdAt`.
@@ -15,6 +16,20 @@ A full-stack banking application with:
 - Application events are published to AWS EventBridge.
 - Salesforce and KYC integrations (mocked or real, depending on your setup).
 - Email notifications sent on offer creation.
+- **Honeybadger integration:** All backend errors are automatically reported to Honeybadger, including request context (body, query, params, endpoint, and IDs) for easier debugging.
+
+## Error Monitoring (Honeybadger)
+
+This project uses [Honeybadger](https://www.honeybadger.io/) for backend error monitoring.
+
+- All unhandled and handled errors in backend controllers are reported to Honeybadger.
+- Error context includes endpoint, request body, query, params, and relevant IDs.
+- To test, trigger an error (e.g., by sending a bad request or temporarily throwing an error in a controller) and check your Honeybadger dashboard.
+
+**Setup:**
+1. Add your `HONEYBADGER_API_KEY` to `.env`.
+2. The backend automatically loads the key and configures Honeybadger.
+3. See `controllers/applicationController.js` for usage of `Honeybadger.notify` with context.
 
 ---
 

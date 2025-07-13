@@ -3,6 +3,7 @@ import { sendOfferEmail } from '../utils/email.js';
 import { createSalesforceRecord } from '../utils/salesforce.js';
 import { runKycCheck } from '../utils/kyc.js';
 import { publishLoanEvent } from '../utils/awsEventBridge.js';
+import Honeybadger from '@honeybadger-io/js';
 
 export const applyForProduct = async (req, res) => {
     try {
@@ -41,6 +42,12 @@ export const applyForProduct = async (req, res) => {
         });
     } catch (err) {
         console.error(err);
+        Honeybadger.notify(err, {
+            context: {
+                endpoint: '/api/apply',
+                body: req.body,
+            }
+        });
         res.status(500).json({ error: '❌ Failed to process application' });
     }
 };
@@ -51,6 +58,14 @@ export const getAllApplications = async (req, res) => {
         res.json(apps);
     } catch (err) {
         console.error(err);
+        Honeybadger.notify(err, {
+            context: {
+                endpoint: '/api/applications',
+                body: req.body,
+                query: req.query,
+                params: req.params,
+            }
+        });
         res.status(500).json({ error: '❌ Failed to fetch applications' });
     }
 };
@@ -83,6 +98,15 @@ export const acceptOffer = async (req, res) => {
         });
     } catch (err) {
         console.error(err);
+        Honeybadger.notify(err, {
+            context: {
+                endpoint: '/api/offer/:id/accept',
+                appId: req.params.id,
+                body: req.body,
+                query: req.query,
+                params: req.params,
+            }
+        });
         res.status(500).json({ error: '❌ Failed to process KYC' });
     }
 };
@@ -94,6 +118,15 @@ export const getApplicationById = async (req, res) => {
         res.json(app);
     } catch (err) {
         console.error(err);
+        Honeybadger.notify(err, {
+            context: {
+                endpoint: '/api/applications/:id',
+                appId: req.params.id,
+                body: req.body,
+                query: req.query,
+                params: req.params,
+            }
+        });
         res.status(500).json({ error: 'Failed to fetch application' });
     }
 };
