@@ -1,13 +1,14 @@
 import mongoose from 'mongoose';
 
 const applicationSchema = new mongoose.Schema({
-    fullName: String,
-    email: String,
-    city: String,
-    postalCode: String,
-    productType: String, // Loan, Flash Credit, Credit Card
+    fullName: { type: String, required: true },
+    email: { type: String, required: true },
+    city: { type: String, required: true },
+    postalCode: { type: String, required: true },
+    productType: { type: String, required: true }, // Loan, Flash Credit, Credit Card
+    amount: { type: Number, required: true },
     status: { type: String, default: 'Applied' },
-    kycResult: String,
+    kycResult: { type: String },
     createdAt: { type: Date, default: Date.now }
 });
 
