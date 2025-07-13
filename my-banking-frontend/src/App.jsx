@@ -6,6 +6,7 @@ import Apply from './pages/Apply';
 import Applications from './pages/Applications';
 import Offer from './pages/Offer';
 import Login from './pages/Login';
+import KycPage from './pages/KycPage';
 
 export default function App() {
   return (
@@ -29,14 +30,8 @@ export default function App() {
                 : <Login />
             }
           />
-          <Route 
-            path="/offer/:id" 
-            element={
-              localStorage.getItem('isLoggedIn') === 'true' 
-                ? <Offer /> 
-                : <Login />
-            }
-          />
+          <Route path="/offer/:id" element={<Offer />} />
+          <Route path="/offer/:id/kyc" element={<KycPage />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </div>

@@ -5,10 +5,11 @@ const applicationSchema = new mongoose.Schema({
     email: { type: String, required: true },
     city: { type: String, required: true },
     postalCode: { type: String, required: true },
-    productType: { type: String, required: true }, // Loan, Flash Credit, Credit Card
+    productType: { type: String, required: true },
     amount: { type: Number, required: true },
     status: { type: String, default: 'Applied' },
     kycResult: { type: String },
+    kycDocumentUrl: { type: String },
     createdAt: { type: Date, default: Date.now }
 });
 
