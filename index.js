@@ -15,7 +15,24 @@ const app = express();
 app.use(Honeybadger.requestHandler);
 app.use(express.json());
 app.use(cors());
+
 app.use('/api', applicationRoutes);
+
+// Serve static frontend build
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(express.static(path.join(__dirname, 'my-banking-frontend/dist')));
+
+app.get('*', (req, res) => {
+  // Only serve index.html for non-API routes
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, 'my-banking-frontend/dist/index.html'));
+  }
+});
 
 app.get('/', (req, res) => {
     res.send('Banking API is running!');
