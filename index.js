@@ -34,13 +34,6 @@ app.get('*', (req, res) => {
   }
 });
 
-app.get('/', (req, res) => {
-    res.send('Banking API is running!');
-});
-
-
-
-
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('Connected to MongoDB'))
     .catch(err => console.error('MongoDB connection error:', err));
