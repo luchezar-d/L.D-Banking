@@ -1,59 +1,43 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { getApplicationById, acceptOffer } from '../api/applications';
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function Offer() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [app, setApp] = useState(null);
-  const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
-  const [accepting, setAccepting] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    getApplicationById(id)
-      .then(res => {
-        setApp(res.data);
+    fetch(`/api/applications/${id}`)
+      .then(res => res.ok ? res.json() : Promise.reject('Not found'))
+      .then(data => {
+        setApp(data);
         setLoading(false);
       })
-      .catch(err => {
-        console.error('Failed to load application', err);
+      .catch(() => {
+        setError('Offer not found.');
         setLoading(false);
       });
   }, [id]);
 
-  const handleAccept = async () => {
-    setAccepting(true);
-    try {
-      const res = await acceptOffer(id);
-      setMessage(`✅ KYC completed: ${res.data.app.status}`);
-      setApp(res.data.app); // update local status
-    } catch (err) {
-      console.error(err);
-      setMessage('❌ Failed to process acceptance.');
-    } finally {
-      setAccepting(false);
-    }
-  };
-
-  if (loading) return <p style={{ padding: '2rem' }}>Loading offer...</p>;
-
-  if (!app) return <p style={{ padding: '2rem' }}>❌ Offer not found</p>;
+  if (loading) return <div className="p-8 text-center">Loading...</div>;
+  if (error) return <div className="p-8 text-center text-red-500">{error}</div>;
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Offer for {app.fullName}</h1>
-      <ul>
-        <li><strong>Product:</strong> {app.productType}</li>
-        <li><strong>City:</strong> {app.city}</li>
-        <li><strong>Postal Code:</strong> {app.postalCode}</li>
-        <li><strong>Status:</strong> {app.status}</li>
-      </ul>
-
-      <button onClick={handleAccept} disabled={accepting}>
-        {accepting ? 'Processing...' : 'Accept Offer & Run KYC'}
+    <div className="max-w-md mx-auto mt-10 bg-white shadow rounded p-8">
+      <h2 className="text-2xl font-bold mb-4">Offer Details</h2>
+      <div className="mb-2"><span className="font-semibold">Applicant:</span> {app.fullName}</div>
+      <div className="mb-2"><span className="font-semibold">Email:</span> {app.email}</div>
+      <div className="mb-2"><span className="font-semibold">Product:</span> {app.productType}</div>
+      <div className="mb-2"><span className="font-semibold">Amount:</span> {app.amount}</div>
+      <div className="mb-2"><span className="font-semibold">Status:</span> {app.status}</div>
+      <button
+        className="mt-6 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+        onClick={() => navigate(`/offer/${id}/kyc`)}
+      >
+        Continue with this offer
       </button>
-
-      <p>{message}</p>
     </div>
   );
 }

@@ -4,6 +4,7 @@ A full-stack banking application with:
 - **Frontend:** React (Vite) + Tailwind CSS
 - **Backend:** Node.js, Express, MongoDB (Mongoose)
 - **Cloud Integration:** AWS EventBridge for event publishing
+- **Error Monitoring:** Honeybadger for backend error tracking
 - **Other Integrations:** Salesforce, KYC, Email notifications
 
 ---
@@ -17,6 +18,13 @@ A full-stack banking application with:
 - Salesforce and KYC integrations (mocked or real, depending on your setup).
 - Email notifications sent on offer creation.
 - **Honeybadger integration:** All backend errors are automatically reported to Honeybadger, including request context (body, query, params, endpoint, and IDs) for easier debugging.
+
+- **Amazon S3 KYC Document Upload:**
+    - Users can upload KYC documents (images, PDFs) from the frontend KYC page.
+    - Files are uploaded to a private S3 bucket using the AWS SDK v3.
+    - The S3 file URL is stored in the `kycDocumentUrl` field of the Application in MongoDB.
+    - All upload errors are logged to Honeybadger with full context for debugging.
+    - S3 bucket name and credentials are configured via `.env`.
 
 ## Error Monitoring (Honeybadger)
 
@@ -93,6 +101,9 @@ PORT=5001
 AWS_ACCESS_KEY_ID=your_aws_access_key
 AWS_SECRET_ACCESS_KEY=your_aws_secret
 AWS_REGION=your_aws_region
+AWS_S3_BUCKET=your_s3_bucket_name
+HONEYBADGER_API_KEY=your_honeybadger_api_key
+NODE_ENV=development
 ```
 
 ### 4. Start the backend
@@ -112,6 +123,7 @@ npm run dev
 - `POST /api/apply` — Submit a new application
 - `GET /api/applications` — List all applications
 - `POST /api/offer/:id/accept` — Accept an offer (triggers KYC)
+- `POST /api/offer/:id/upload` — Upload a KYC document (multipart/form-data, field: `kycDocument`)
 - `GET /api/applications/:id` — Get application by ID
 
 ---
