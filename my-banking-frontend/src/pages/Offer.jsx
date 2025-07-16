@@ -34,31 +34,31 @@ export default function Offer() {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f9f9ff] font-sans">
+    <div className="min-h-screen flex flex-col bg-[#f9f9ff] font-inter">
       <div className="flex flex-1 flex-col md:flex-row max-w-5xl mx-auto w-full px-4 py-10 gap-10">
         {/* Left column: Offer info */}
         <div className="flex-1 flex flex-col justify-center">
           <h2 className="text-4xl font-extrabold mb-8 text-left text-purple-400">Offer Details</h2>
-          <div className="grid grid-cols-1 gap-6 mb-10">
-            <div className="flex flex-col">
-              <span className="font-bold text-gray-700">Applicant:</span>
-              <span className="text-purple-600 text-lg">{app.fullName}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-10">
+            <div className="flex items-center mb-3">
+              <span className="font-semibold text-gray-700 text-base md:text-lg">Applicant:</span>
+              <span className="ml-2 text-lg md:text-xl text-purple-600 font-medium">{app.fullName}</span>
             </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-gray-700">Email:</span>
-              <span className="text-purple-600 text-lg">{app.email}</span>
+            <div className="flex items-center mb-3">
+              <span className="font-semibold text-gray-700 text-base md:text-lg">Email:</span>
+              <span className="ml-2 text-lg md:text-xl text-purple-600 font-medium">{app.email}</span>
             </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-gray-700">Product:</span>
-              <span className="text-purple-600 text-lg">{app.productType}</span>
+            <div className="flex items-center mb-3">
+              <span className="font-semibold text-gray-700 text-base md:text-lg">Product:</span>
+              <span className="ml-2 text-lg md:text-xl text-purple-600 font-medium">{app.productType}</span>
             </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-gray-700">Amount:</span>
-              <span className="text-purple-600 text-lg">${app.amount}</span>
+            <div className="flex items-center mb-3">
+              <span className="font-semibold text-gray-700 text-base md:text-lg">Amount:</span>
+              <span className="ml-2 text-lg md:text-xl text-purple-600 font-medium">${app.amount}</span>
             </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-gray-700">Status:</span>
-              <span className="text-purple-600 text-lg">{app.status}</span>
+            <div className="flex items-center mb-3">
+              <span className="font-semibold text-gray-700 text-base md:text-lg">Status:</span>
+              <span className="ml-2 text-lg md:text-xl text-purple-600 font-medium">{app.status}</span>
             </div>
           </div>
           <button
@@ -69,7 +69,7 @@ export default function Offer() {
           </button>
         </div>
         {/* Right column: Slogan / onboarding */}
-        <div className="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left">
+        <div className="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left md:pl-16">
           <div className="text-2xl font-bold text-purple-400 mb-4">Secure your future with one click.</div>
           <div className="text-base text-gray-500">Fast, secure, and personalized banking for your needs.</div>
         </div>

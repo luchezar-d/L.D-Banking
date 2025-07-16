@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Footer from '../components/Footer';
 import { nationalities } from '../utils/nationalities';
 import { useParams, useNavigate } from 'react-router-dom';
+import { sendKycConfirmationEmail } from '../utils/email';
 
 export default function KycPage() {
   const { id } = useParams();
@@ -12,6 +13,7 @@ export default function KycPage() {
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [app, setApp] = useState(null);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -43,7 +45,25 @@ export default function KycPage() {
       if (!uploadRes.ok) throw new Error('Upload failed');
       const acceptRes = await fetch(`/api/offer/${id}/accept`, { method: 'POST' });
       if (!acceptRes.ok) throw new Error('Accept failed');
-      navigate('/applications');
+      // Fetch latest app info for email
+      const appRes = await fetch(`/api/applications/${id}`);
+      let appData = null;
+      if (appRes.ok) {
+        appData = await appRes.json();
+        setApp(appData);
+      }
+      // Send KYC confirmation email after successful upload & accept
+      try {
+        await sendKycConfirmationEmail({
+          name: appData?.fullName || '',
+          product: appData?.productType || '',
+          email: appData?.email || '',
+        });
+      } catch (emailErr) {
+        // Optionally log or show error, but don't block navigation
+        console.error('Failed to send KYC confirmation email:', emailErr);
+      }
+      navigate('/thank-you');
     } catch (err) {
       setError('Failed to upload and accept offer.');
     } finally {
@@ -113,7 +133,7 @@ export default function KycPage() {
                 className="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-purple-300 to-purple-500 text-white font-bold rounded-lg text-lg shadow transition hover:from-purple-400 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-400 disabled:opacity-60 disabled:cursor-not-allowed"
                 disabled={loading}
               >
-                {loading ? 'Uploading...' : 'Upload & Continue'}
+                {loading ? 'Uploading...' : 'Upload & Finish'}
               </button>
             </div>
           </form>
