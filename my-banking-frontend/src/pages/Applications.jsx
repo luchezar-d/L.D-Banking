@@ -48,43 +48,67 @@ export default function Applications() {
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>All Applications</h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <table border="1" cellPadding="8" cellSpacing="0">
-            <thead>
-              <tr>
-                <th>Full Name</th>
-                <th>Email</th>
-                <th>Product</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {apps.map(app => (
-                <tr key={app._id}>
-                  <td>{app.fullName}</td>
-                  <td>{app.email}</td>
-                  <td>{app.productType}</td>
-                  <td>{app.status}</td>
-                  <td>
-                    <button onClick={() => handleDelete(app._id)} disabled={deleting} style={{ color: 'red' }}>
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <button onClick={handleDeleteAll} disabled={deleting || apps.length === 0} style={{ marginTop: 16, color: 'red' }}>
+    <div className="min-h-screen bg-[#f8f8ff] flex flex-col w-full">
+      <main className="pt-20 w-full flex flex-col items-center justify-center py-12">
+        <section className="w-full max-w-4xl bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900">All Applications</h1>
+          <button
+            onClick={handleDeleteAll}
+            disabled={deleting || loading || apps.length === 0}
+            className="px-6 py-2 rounded-lg border-2 border-red-400 text-red-500 font-semibold bg-white hover:bg-red-50 hover:text-white hover:bg-gradient-to-r hover:from-red-400 hover:to-red-600 hover:border-red-600 shadow-sm transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
             Delete All
           </button>
-        </>
-      )}
+        </div>
+        {loading ? (
+          <p className="text-gray-500 text-center py-8">Loading...</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left rounded-lg overflow-hidden bg-transparent">
+              <thead>
+                <tr className="bg-[#f3f3fa] text-gray-700">
+                  <th className="py-3 px-4 font-semibold">Full Name</th>
+                  <th className="py-3 px-4 font-semibold">Email</th>
+                  <th className="py-3 px-4 font-semibold">Product</th>
+                  <th className="py-3 px-4 font-semibold">Amount</th>
+                  <th className="py-3 px-4 font-semibold">City</th>
+                  <th className="py-3 px-4 font-semibold">Postal Code</th>
+                  <th className="py-3 px-4 font-semibold text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {apps.length === 0 ? (
+                  <tr>
+                    <td colSpan="7" className="text-center text-gray-400 py-8">No applications found.</td>
+                  </tr>
+                ) : (
+                  apps.map(app => (
+                    <tr key={app._id} className="border-b border-gray-100 hover:bg-[#f3f3fa] transition">
+                      <td className="py-3 px-4 text-gray-900">{app.fullName}</td>
+                      <td className="py-3 px-4 text-gray-900">{app.email}</td>
+                      <td className="py-3 px-4 text-gray-900">{app.productType}</td>
+                      <td className="py-3 px-4 text-gray-900">{app.amount}</td>
+                      <td className="py-3 px-4 text-gray-900">{app.city}</td>
+                      <td className="py-3 px-4 text-gray-900">{app.postalCode}</td>
+                      <td className="py-3 px-4 text-center">
+                        <button
+                          onClick={() => handleDelete(app._id)}
+                          disabled={deleting}
+                          className="px-4 py-2 rounded border-2 border-red-400 text-red-500 font-semibold bg-white hover:bg-red-50 hover:text-white hover:bg-gradient-to-r hover:from-red-400 hover:to-red-600 hover:border-red-600 shadow-sm transition disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+        </section>
+      </main>
     </div>
   );
 }
