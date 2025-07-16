@@ -3,7 +3,10 @@ import headerImage from '../assets/1.jpg';
 
 export default function HeaderSection() {
   return (
-    <section className="w-full min-h-screen flex flex-col md:flex-row items-center justify-center bg-gradient-to-r from-purple-100 to-purple-200">
+    <section
+      className="w-full flex flex-col md:flex-row items-center justify-center bg-gradient-to-r from-purple-100 to-purple-200"
+      style={{ minHeight: 'calc(100vh - 5rem)' }}
+    >
       <div className="flex-1 flex items-center justify-center">
         <img
           src={headerImage}
