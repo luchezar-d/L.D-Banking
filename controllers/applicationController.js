@@ -93,7 +93,8 @@ export const applyForProduct = async (req, res) => {
             applicationId: app._id,
             ...app.toObject()
         });
-        const offerUrl = `http://localhost:5173/offer/${app._id}`;
+        const baseUrl = process.env.BASE_URL || 'http://localhost:5173';
+        const offerUrl = `${baseUrl}/offer/${app._id}`;
         res.json({ 
             message: 'Application saved & processing started', 
             app,
@@ -187,5 +188,48 @@ export const getApplicationById = async (req, res) => {
             }
         });
         res.status(500).json({ error: 'Failed to fetch application' });
+    }
+};
+
+// Delete a single application by ID
+export const deleteApplication = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deleted = await Application.findByIdAndDelete(id);
+        if (!deleted) {
+            return res.status(404).json({ error: 'Application not found' });
+        }
+        res.json({ message: 'Application deleted', id });
+    } catch (err) {
+        console.error(err);
+        Honeybadger.notify(err, {
+            context: {
+                endpoint: '/api/applications/:id',
+                appId: req.params.id,
+                body: req.body,
+                query: req.query,
+                params: req.params,
+            }
+        });
+        res.status(500).json({ error: 'Failed to delete application' });
+    }
+};
+
+// Delete all applications
+export const deleteAllApplications = async (req, res) => {
+    try {
+        await Application.deleteMany({});
+        res.json({ message: 'All applications deleted' });
+    } catch (err) {
+        console.error(err);
+        Honeybadger.notify(err, {
+            context: {
+                endpoint: '/api/applications',
+                body: req.body,
+                query: req.query,
+                params: req.params,
+            }
+        });
+        res.status(500).json({ error: 'Failed to delete all applications' });
     }
 };

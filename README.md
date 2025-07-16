@@ -9,8 +9,8 @@ A full-stack banking application with:
 
 ---
 
-
 ## Features
+- Modern, responsive UI/UX with fixed navbar, full-width header, mobile-friendly layouts, and a gradient footer.
 - Users can apply for banking products (Loan, Flash Credit, Credit Card) via a web form.
 - All applications are stored in MongoDB with required fields: `fullName`, `email`, `city`, `postalCode`, `productType`, `amount`, `status`, `kycResult`, `createdAt`.
 - Backend validates all required fields and always sets status to `Offer Made` on creation.
@@ -18,7 +18,6 @@ A full-stack banking application with:
 - Salesforce and KYC integrations (mocked or real, depending on your setup).
 - Email notifications sent on offer creation.
 - **Honeybadger integration:** All backend errors are automatically reported to Honeybadger, including request context (body, query, params, endpoint, and IDs) for easier debugging.
-
 - **Amazon S3 KYC Document Upload:**
     - Users can upload KYC documents (images, PDFs) from the frontend KYC page.
     - Files are uploaded to a private S3 bucket using the AWS SDK v3.
@@ -26,23 +25,9 @@ A full-stack banking application with:
     - All upload errors are logged to Honeybadger with full context for debugging.
     - S3 bucket name and credentials are configured via `.env`.
 
-## Error Monitoring (Honeybadger)
-
-This project uses [Honeybadger](https://www.honeybadger.io/) for backend error monitoring.
-
-- All unhandled and handled errors in backend controllers are reported to Honeybadger.
-- Error context includes endpoint, request body, query, params, and relevant IDs.
-- To test, trigger an error (e.g., by sending a bad request or temporarily throwing an error in a controller) and check your Honeybadger dashboard.
-
-**Setup:**
-1. Add your `HONEYBADGER_API_KEY` to `.env`.
-2. The backend automatically loads the key and configures Honeybadger.
-3. See `controllers/applicationController.js` for usage of `Honeybadger.notify` with context.
-
 ---
 
 ## Project Structure
-
 ```
 my-banking-backend/
 ├── controllers/
@@ -68,8 +53,35 @@ my-banking-backend/
     │   └── ...
     ├── tailwind.config.cjs
     ├── postcss.config.cjs
+    ├── .env
     └── ...
 ```
+
+---
+
+## Environment Variables
+
+### Backend (`my-banking-backend/.env`)
+```
+MONGO_URI=your_mongodb_connection_string
+PORT=5001
+AWS_ACCESS_KEY_ID=your_aws_access_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret
+AWS_REGION=your_aws_region
+AWS_S3_BUCKET=your_s3_bucket_name
+HONEYBADGER_API_KEY=your_honeybadger_api_key
+NODE_ENV=production
+BASE_URL=https://l-d-banking.onrender.com
+```
+
+### Frontend (`my-banking-frontend/.env`)
+```
+VITE_API_URL=https://l-d-banking.onrender.com/api
+VITE_PROXY_API=http://localhost:5001
+```
+
+- On Render, set these variables in the "Environment" section for each service.
+- For local development, use `VITE_API_URL=http://localhost:5001/api` in the frontend `.env`.
 
 ---
 
@@ -78,7 +90,7 @@ my-banking-backend/
 ### Prerequisites
 - Node.js & npm
 - MongoDB Atlas or local MongoDB
-- AWS account (EventBridge)
+- AWS account (EventBridge, S3)
 
 ### 1. Clone the repo
 ```
@@ -93,25 +105,15 @@ cd my-banking-frontend
 npm install
 ```
 
-### 3. Environment Variables
-Create a `.env` file in `my-banking-backend/`:
-```
-MONGO_URI=your_mongodb_connection_string
-PORT=5001
-AWS_ACCESS_KEY_ID=your_aws_access_key
-AWS_SECRET_ACCESS_KEY=your_aws_secret
-AWS_REGION=your_aws_region
-AWS_S3_BUCKET=your_s3_bucket_name
-HONEYBADGER_API_KEY=your_honeybadger_api_key
-NODE_ENV=development
-```
+### 3. Configure environment variables
+- See above for `.env` examples for backend and frontend.
 
 ### 4. Start the backend
 ```
 npm start
 ```
 
-### 5. Start the frontend
+### 5. Start the frontend (local dev)
 ```
 cd my-banking-frontend
 npm run dev
@@ -134,17 +136,29 @@ npm run dev
 
 ---
 
-## Frontend
-- Located in `my-banking-frontend/`
-- Main form: `src/pages/Apply.jsx`
-- Uses Vite, React, Tailwind CSS
+## Frontend Features
+- Responsive, modern UI/UX with:
+  - Fixed, full-width navbar (hamburger menu on mobile)
+  - Header section fills viewport under navbar
+  - Main content uses full width, with max-w constraints
+  - Footer with gradient, social icons, contact info, and map
+  - All pages are mobile-friendly and visually consistent
+- Uses Tailwind CSS best practices and reusable styles
+- API calls use environment-based URLs for cross-device compatibility
 
 ---
 
-## Best Practices
-- Secrets are stored in `.env` (never commit this file)
-- All required fields are validated on the backend
-- Git is set up with `.gitignore` to protect secrets and node_modules
+## Error Monitoring (Honeybadger)
+- All backend errors are reported to Honeybadger with full request context
+- Add your `HONEYBADGER_API_KEY` to backend `.env`
+
+---
+
+## Deployment (Render)
+- Add all required environment variables in Render dashboard for both frontend and backend
+- Frontend must use `VITE_API_URL=https://l-d-banking.onrender.com/api`
+- Backend must use `BASE_URL=https://l-d-banking.onrender.com`
+- Redeploy after updating environment variables
 
 ---
 
