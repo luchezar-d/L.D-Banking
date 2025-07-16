@@ -19,23 +19,34 @@ export default function Login() {
 
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Admin Login</h1>
-      <form onSubmit={handleLogin}>
-        <input 
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        /><br /><br />
-        <input 
-          type="password" 
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        /><br /><br />
-        <button type="submit">Login</button>
-      </form>
-      <p style={{ color: 'red' }}>{error}</p>
+    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-r from-purple-100 via-purple-50 to-purple-100 px-4 py-12">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center">
+        <h1 className="text-3xl font-extrabold text-[#7c3aed] mb-6 tracking-tight text-center font-serif">Admin Login</h1>
+        <form onSubmit={handleLogin} className="w-full flex flex-col gap-4">
+          <input
+            className="w-full px-4 py-3 rounded-md border border-gray-200 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#a78bfa] text-base shadow-sm transition"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            autoComplete="username"
+          />
+          <input
+            type="password"
+            className="w-full px-4 py-3 rounded-md border border-gray-200 bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#a78bfa] text-base shadow-sm transition"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
+          />
+          <button
+            type="submit"
+            className="w-full py-3 rounded-md bg-gradient-to-r from-[#a78bfa] to-[#7c3aed] text-white font-semibold text-lg shadow hover:from-[#7c3aed] hover:to-[#a78bfa] hover:shadow-lg transition"
+          >
+            Login
+          </button>
+        </form>
+        {error && <p className="mt-4 text-center text-red-600 font-medium">{error}</p>}
+      </div>
     </div>
   );
 }

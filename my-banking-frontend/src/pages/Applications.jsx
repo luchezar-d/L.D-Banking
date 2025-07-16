@@ -49,8 +49,8 @@ export default function Applications() {
 
   return (
     <div className="min-h-screen bg-[#f8f8ff] flex flex-col w-full">
-      <main className="pt-20 w-full flex flex-col items-center justify-center py-12">
-        <section className="w-full max-w-4xl bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+      <main className="w-full max-w-screen-xl mx-auto flex flex-col items-center justify-center py-12 px-4 md:px-8">
+        <section className="w-full bg-white rounded-2xl shadow-xl p-4 md:p-8 border border-gray-100">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900">All Applications</h1>
           <button
@@ -65,7 +65,7 @@ export default function Applications() {
           <p className="text-gray-500 text-center py-8">Loading...</p>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-left rounded-lg overflow-hidden bg-transparent">
+            <table className="w-full min-w-[700px] text-left rounded-lg overflow-hidden bg-transparent">
               <thead>
                 <tr className="bg-[#f3f3fa] text-gray-700">
                   <th className="py-3 px-4 font-semibold">Full Name</th>
