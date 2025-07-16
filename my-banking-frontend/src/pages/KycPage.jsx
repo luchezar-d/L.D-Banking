@@ -39,7 +39,7 @@ export default function KycPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white shadow rounded p-8">
+    <div className="max-w-md mx-auto mt-4 bg-white shadow rounded p-6 mt-[5.5rem]">
       <h2 className="text-2xl font-bold mb-4">KYC Document Upload</h2>
       <form onSubmit={handleSubmit}>
         <input

@@ -25,7 +25,7 @@ export default function Offer() {
   if (error) return <div className="p-8 text-center text-red-500">{error}</div>;
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white shadow rounded p-8">
+    <div className="max-w-md mx-auto mt-4 bg-white shadow rounded p-6 mt-[5.5rem]">
       <h2 className="text-2xl font-bold mb-4">Offer Details</h2>
       <div className="mb-2"><span className="font-semibold">Applicant:</span> {app.fullName}</div>
       <div className="mb-2"><span className="font-semibold">Email:</span> {app.email}</div>
