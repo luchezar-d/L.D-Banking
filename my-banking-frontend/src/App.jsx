@@ -7,6 +7,7 @@ import Applications from './pages/Applications';
 import Offer from './pages/Offer';
 import Login from './pages/Login';
 import KycPage from './pages/KycPage';
+import ThankYou from './pages/ThankYou';
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
           <Route path="/offer/:id" element={<Offer />} />
           <Route path="/offer/:id/kyc" element={<KycPage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/thank-you" element={<ThankYou />} />
         </Routes>
       </div>
     </BrowserRouter>
