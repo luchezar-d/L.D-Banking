@@ -23,7 +23,7 @@ export default function Offer() {
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-[calc(100vh-5.5rem)]">
-      <div className="animate-pulse text-blue-600 text-xl font-semibold">Loading...</div>
+      <div className="animate-pulse text-purple-400 text-xl font-semibold">Loading...</div>
     </div>
   );
   if (error) return (
@@ -33,36 +33,40 @@ export default function Offer() {
   );
 
   return (
-    <div className="max-w-lg mx-auto mt-[5.5rem] bg-gradient-to-br from-blue-50 via-white to-blue-100 shadow-2xl rounded-2xl p-8 flex flex-col items-center">
-      <h2 className="text-3xl font-extrabold mb-6 text-center text-blue-700">Offer Details</h2>
-      <div className="w-full flex flex-col gap-4 mb-6">
-        <div className="flex justify-between items-center">
-          <span className="font-semibold text-gray-700">Applicant:</span>
-          <span className="text-gray-900">{app.fullName}</span>
+    <div className="w-full bg-white min-h-[calc(100vh-5.5rem)] pt-[5.5rem]">
+      <div className="max-w-2xl mx-auto px-4 py-10">
+        <h2 className="text-3xl font-extrabold mb-8 text-left text-purple-400">Offer Details</h2>
+        <div className="flex flex-col gap-6 mb-10">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <span className="font-bold text-gray-700 w-32">Applicant:</span>
+            <span className="text-purple-600 text-lg">{app.fullName}</span>
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <span className="font-bold text-gray-700 w-32">Email:</span>
+            <span className="text-purple-600 text-lg">{app.email}</span>
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <span className="font-bold text-gray-700 w-32">Product:</span>
+            <span className="text-purple-600 text-lg">{app.productType}</span>
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <span className="font-bold text-gray-700 w-32">Amount:</span>
+            <span className="text-purple-600 text-lg">${app.amount}</span>
+          </div>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <span className="font-bold text-gray-700 w-32">Status:</span>
+            <span className="text-purple-600 text-lg">{app.status}</span>
+          </div>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="font-semibold text-gray-700">Email:</span>
-          <span className="text-gray-900">{app.email}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="font-semibold text-gray-700">Product:</span>
-          <span className="text-blue-600 font-bold">{app.productType}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="font-semibold text-gray-700">Amount:</span>
-          <span className="text-green-600 font-bold">${app.amount}</span>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="font-semibold text-gray-700">Status:</span>
-          <span className={`font-bold ${app.status === 'Approved' ? 'text-green-700' : 'text-yellow-600'}`}>{app.status}</span>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <button
+            className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-purple-300 to-purple-400 text-white font-bold rounded-lg text-lg transition hover:from-purple-400 hover:to-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-400"
+            onClick={() => navigate(`/offer/${id}/kyc`)}
+          >
+            Continue with this offer
+          </button>
         </div>
       </div>
-      <button
-        className="mt-2 w-full bg-blue-600 text-white py-3 rounded-lg font-bold text-lg shadow hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
-        onClick={() => navigate(`/offer/${id}/kyc`)}
-      >
-        Continue with this offer
-      </button>
     </div>
   );
 }
