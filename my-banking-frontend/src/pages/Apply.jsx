@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { applyForProduct } from '../api/applications';
+import { sendInitialOfferEmail } from '../utils/email';
 import { CheckCircle, CreditCard, TrendingUp } from 'lucide-react';
 import Footer from '../components/Footer';
 
@@ -26,10 +27,20 @@ export default function Apply() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await applyForProduct(form);
+      const res = await applyForProduct(form);
       setMessage('Application submitted!');
+      // Send confirmation email after successful application
+      if (res && res.data && res.data.app && res.data.app._id) {
+        await sendInitialOfferEmail({
+          name: form.fullName,
+          product: form.productType,
+          offerLink: `https://l-d-banking.onrender.com/offer/${res.data.app._id}`,
+          email: form.email,
+        });
+      }
     } catch (err) {
       setMessage('Failed to submit application');
+      console.error('Application or email error:', err);
     }
   };
 
