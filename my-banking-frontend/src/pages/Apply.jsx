@@ -1,6 +1,8 @@
+
 import React, { useState } from 'react';
 import { applyForProduct } from '../api/applications';
 import { CheckCircle, CreditCard, TrendingUp } from 'lucide-react';
+import Footer from '../components/Footer';
 
 export default function Apply() {
   const [form, setForm] = useState({
@@ -33,11 +35,11 @@ export default function Apply() {
 
   return (
     <div className="min-h-screen bg-[#f8f8ff] flex flex-col w-full">
-      <main className="container mx-auto max-w-6xl flex flex-col md:flex-row items-start gap-12 px-6 py-12">
+      <main className="w-full max-w-screen-xl mx-auto flex flex-col md:flex-row items-start gap-12 px-4 md:px-8 py-12 mt-[5.5rem] min-h-[calc(100vh-5.5rem)]">
         {/* Form Card */}
-        <div className="w-full md:w-1/2 bg-[#fafafa] p-8 rounded-lg shadow-md border border-gray-100 flex flex-col justify-center">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4 text-center">Apply for a Product</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="w-full md:w-1/2 bg-[#fafafa] p-6 md:p-8 rounded-lg shadow-md border border-gray-100 flex flex-col justify-center">
+          <h2 className="text-xl md:text-2xl font-medium text-gray-900 mb-3 text-center">Apply for a Product</h2>
+          <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
             <div>
               <label className="block text-gray-700 mb-1 font-medium" htmlFor="fullName">Full Name</label>
               <input name="fullName" id="fullName" placeholder="Full Name" onChange={handleChange}
@@ -82,21 +84,22 @@ export default function Apply() {
           <div className="mt-4 text-center text-gray-700 min-h-[2rem]">{message}</div>
         </div>
         {/* Features Card */}
-        <div className="w-full md:w-1/2 bg-white p-8 rounded-lg shadow-md border border-gray-100 flex flex-col justify-center items-start">
-          <h2 className="text-2xl font-semibold text-[#7c3aed] mb-4">Why Choose L.D Banking?</h2>
-          <ul className="space-y-4 text-base">
+        <div className="w-full md:w-1/2 bg-white p-6 md:p-8 rounded-lg shadow-md border border-gray-100 flex flex-col justify-center items-start">
+          <h2 className="text-xl md:text-2xl font-medium text-[#7c3aed] mb-3">Why Choose L.D Banking?</h2>
+          <ul className="space-y-3 md:space-y-4 text-base">
             <li className="flex items-center gap-3 text-gray-800">
-              <CheckCircle className="w-6 h-6 text-[#a78bfa]" /> Flat fee, 0% interest
+              <CheckCircle className="w-5 h-5 md:w-6 md:h-6 text-[#a78bfa]" /> Flat fee, 0% interest
             </li>
             <li className="flex items-center gap-3 text-gray-800">
-              <CreditCard className="w-6 h-6 text-[#a78bfa]" /> Pay by card or transfer
+              <CreditCard className="w-5 h-5 md:w-6 md:h-6 text-[#a78bfa]" /> Pay by card or transfer
             </li>
             <li className="flex items-center gap-3 text-gray-800">
-              <TrendingUp className="w-6 h-6 text-[#a78bfa]" /> Repay in monthly installments
+              <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-[#a78bfa]" /> Repay in monthly installments
             </li>
           </ul>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }
