@@ -49,7 +49,7 @@ export default function Applications() {
 
   return (
     <div className="min-h-screen bg-[#f8f8ff] flex flex-col w-full">
-      <main className="w-full max-w-screen-xl mx-auto flex flex-col items-center justify-center py-12 px-4 md:px-8">
+      <main className="w-full max-w-screen-xl mx-auto flex flex-col items-center justify-center py-4 px-4 md:px-8 mt-[5.5rem]">
         <section className="w-full bg-white rounded-2xl shadow-xl p-4 md:p-8 border border-gray-100">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900">All Applications</h1>
