@@ -35,7 +35,7 @@ export default function Offer() {
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-[#f9f9ff] font-inter">
-      <div className="flex flex-1 items-center justify-center py-16">
+      <div className="flex flex-1 items-center justify-center pt-[6rem] pb-10">
         <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-8 px-4">
           {/* Left column: Offer Details */}
           <div className="flex flex-col justify-center">
