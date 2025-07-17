@@ -7,13 +7,25 @@ export default function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'admin') {
-      localStorage.setItem('isLoggedIn', 'true');
-      window.location.href = '/';  // ✅ redirect to Home
-    } else {
-      setError('❌ Invalid username or password');
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: username, password }),
+      });
+      const data = await res.json();
+      if (res.ok && data.token) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('isAdmin', data.isAdmin ? 'true' : 'false');
+        localStorage.setItem('isLoggedIn', 'true');
+        window.location.href = '/apply';
+      } else {
+        setError(data.error || 'Invalid credentials');
+      }
+    } catch (err) {
+      setError('Login failed');
     }
   };
 

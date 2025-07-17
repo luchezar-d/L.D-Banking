@@ -44,13 +44,22 @@ export default function Navbar() {
               Apply
             </Link>
           )}
-          {isLoggedIn && (
+          {isLoggedIn && localStorage.getItem('isAdmin') === 'true' && (
             <Link
               to="/applications"
               className="text-lg font-semibold text-gray-900 hover:text-[#7c3aed] transition-colors duration-200 tracking-wide font-sans"
               onClick={() => setMenuOpen(false)}
             >
               Applications
+            </Link>
+          )}
+          {isLoggedIn && localStorage.getItem('isAdmin') === 'true' && (
+            <Link
+              to="/register"
+              className="text-lg font-semibold text-gray-900 hover:text-[#7c3aed] transition-colors duration-200 tracking-wide font-sans"
+              onClick={() => setMenuOpen(false)}
+            >
+              Register
             </Link>
           )}
           {!isLoggedIn && (
@@ -91,7 +100,7 @@ export default function Navbar() {
               Apply
             </Link>
           )}
-          {isLoggedIn && (
+          {isLoggedIn && localStorage.getItem('isAdmin') === 'true' && (
             <Link
               to="/applications"
               className="text-lg font-semibold text-gray-900 hover:text-[#7c3aed] transition-colors duration-200 tracking-wide font-sans"
