@@ -26,8 +26,10 @@ export default function Apply() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Submitting form:', form);
     try {
       const res = await applyForProduct(form);
+      console.log('API response:', res);
       setMessage('Application submitted!');
       // Send confirmation email after successful application
       if (res && res.data && res.data.app && res.data.app._id) {
@@ -41,6 +43,7 @@ export default function Apply() {
     } catch (err) {
       setMessage('Failed to submit application');
       console.error('Application or email error:', err);
+      alert('Failed to submit application: ' + (err?.response?.data?.error || err.message));
     }
   };
 

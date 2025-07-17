@@ -11,11 +11,34 @@ export const uploadKycDocument = async (req, res) => {
 };
 
 export const applyForProduct = async (req, res) => {
-    // ...existing code from original file...
+  try {
+    const { fullName, email, city, postalCode, productType, amount } = req.body;
+    if (!fullName || !email || !city || !postalCode || !productType || !amount) {
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+    const app = new Application({ fullName, email, city, postalCode, productType, amount });
+    await app.save();
+    res.status(201).json({ message: 'Application submitted!', app });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to submit application.' });
+  }
 };
 
+import mongoose from 'mongoose';
+
 export const getAllApplications = async (req, res) => {
-    // ...existing code from original file...
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(500).json({ error: 'Database not connected' });
+  }
+  try {
+    const apps = await Application.find();
+    res.json(apps);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch applications' });
+  }
+};
+export const ping = (req, res) => {
+  res.json({ message: 'pong' });
 };
 
 export const acceptOffer = async (req, res) => {

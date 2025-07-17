@@ -1,10 +1,16 @@
-// Moved from root routes/applications.js
+
 import express from 'express';
 import { applyForProduct, getAllApplications, acceptOffer, getApplicationById, deleteApplication, deleteAllApplications, uploadKycDocument } from '../controllers/applicationController.js';
 import multer from 'multer';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
+
+// @copilot debug: Add fallback test route
+router.get('/ping', (req, res) => {
+  console.log('GET /api/ping route hit');
+  res.json({ message: 'pong' });
+});
 
 router.post('/apply', applyForProduct);
 router.get('/applications', getAllApplications);
