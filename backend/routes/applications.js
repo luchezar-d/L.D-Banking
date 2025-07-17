@@ -1,11 +1,10 @@
+// Moved from root routes/applications.js
 import express from 'express';
-import { applyForProduct, getAllApplications, acceptOffer, getApplicationById, deleteApplication, deleteAllApplications } from '../controllers/applicationController.js';
+import { applyForProduct, getAllApplications, acceptOffer, getApplicationById, deleteApplication, deleteAllApplications, uploadKycDocument } from '../controllers/applicationController.js';
 import multer from 'multer';
-import { uploadKycDocument } from '../controllers/applicationController.js';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
-
 
 router.post('/apply', applyForProduct);
 router.get('/applications', getAllApplications);

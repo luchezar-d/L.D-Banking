@@ -1,7 +1,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import applicationRoutes from './routes/applications.js';
+import applicationRoutes from './backend/routes/applications.js';
+import authRoutes from './backend/routes/auth.js';
 import cors from 'cors';
 import Honeybadger from '@honeybadger-io/js';
 dotenv.config();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api', applicationRoutes);
+app.use('/api/auth', authRoutes);
 
 // Serve static frontend build
 import path from 'path';
