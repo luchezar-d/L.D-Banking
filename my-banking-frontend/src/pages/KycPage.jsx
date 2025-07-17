@@ -73,7 +73,7 @@ export default function KycPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f9f9ff] font-sans">
-      <div className="flex flex-1 flex-col md:flex-row max-w-5xl mx-auto w-full px-4 pt-[6rem] pb-10 gap-10">
+      <div className="flex flex-1 flex-col md:flex-row max-w-5xl mx-auto w-full px-4 pt-[5.5rem] pb-10 gap-10">
         {/* Left column: KYC form */}
         <div className="flex-1 flex flex-col justify-center">
           <h2 className="text-4xl font-extrabold mb-8 text-left text-purple-400">KYC Information & Document Upload</h2>
