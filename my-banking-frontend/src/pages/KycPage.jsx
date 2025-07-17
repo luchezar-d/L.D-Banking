@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { getApplicationById } from '../api/applications';
 import Footer from '../components/Footer';
 import { nationalities } from '../utils/nationalities';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -46,11 +47,13 @@ export default function KycPage() {
       const acceptRes = await fetch(`/api/offer/${id}/accept`, { method: 'POST' });
       if (!acceptRes.ok) throw new Error('Accept failed');
       // Fetch latest app info for email
-      const appRes = await fetch(`/api/applications/${id}`);
       let appData = null;
-      if (appRes.ok) {
-        appData = await appRes.json();
+      try {
+        const res = await getApplicationById(id);
+        appData = res.data;
         setApp(appData);
+      } catch (fetchErr) {
+        console.error('Failed to fetch application after KYC:', fetchErr);
       }
       // Send KYC confirmation email after successful upload & accept
       try {

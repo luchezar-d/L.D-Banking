@@ -46,7 +46,15 @@ export const acceptOffer = async (req, res) => {
 };
 
 export const getApplicationById = async (req, res) => {
-    // ...existing code from original file...
+  try {
+    const app = await Application.findById(req.params.id);
+    if (!app) {
+      return res.status(404).json({ error: 'Application not found' });
+    }
+    res.json(app);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch application' });
+  }
 };
 
 export const deleteApplication = async (req, res) => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import { useParams, useNavigate } from 'react-router-dom';
+import { getApplicationById } from '../api/applications';
 
 export default function Offer() {
   const { id } = useParams();
@@ -10,14 +11,20 @@ export default function Offer() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetch(`/api/applications/${id}`)
-      .then(res => res.ok ? res.json() : Promise.reject('Not found'))
-      .then(data => {
-        setApp(data);
+    setLoading(true);
+    setError('');
+    getApplicationById(id)
+      .then(res => {
+        setApp(res.data);
         setLoading(false);
       })
-      .catch(() => {
-        setError('Offer not found.');
+      .catch(err => {
+        console.error('Error loading offer:', err);
+        setError(
+          err?.response?.data?.message ||
+          err?.message ||
+          'Offer not found.'
+        );
         setLoading(false);
       });
   }, [id]);
