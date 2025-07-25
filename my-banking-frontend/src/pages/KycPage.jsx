@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Honeybadger from '@honeybadger-io/js';
 import { getApplicationById } from '../api/applications';
 import Footer from '../components/Footer';
 import { nationalities } from '../utils/nationalities';
@@ -38,24 +39,31 @@ export default function KycPage() {
       formData.append('nationality', nationality);
       formData.append('isPublicFigure', isPublicFigure);
       formData.append('additionalInfo', additionalInfo);
-      // Send all KYC info to backend (which should forward to AWS)
+      
       const uploadRes = await fetch(`/api/offer/${id}/upload`, {
         method: 'POST',
         body: formData,
       });
-      if (!uploadRes.ok) throw new Error('Upload failed');
+      if (!uploadRes.ok) {
+        const err = new Error('Upload failed');
+        Honeybadger.notify(err);
+        throw err;
+      }
       const acceptRes = await fetch(`/api/offer/${id}/accept`, { method: 'POST' });
-      if (!acceptRes.ok) throw new Error('Accept failed');
-      // Fetch latest app info for email
+      if (!acceptRes.ok) {
+        const err = new Error('Accept failed');
+        Honeybadger.notify(err);
+        throw err;
+      }
+      
       let appData = null;
       try {
         const res = await getApplicationById(id);
         appData = res.data;
         setApp(appData);
       } catch (fetchErr) {
-        console.error('Failed to fetch application after KYC:', fetchErr);
+        Honeybadger.notify(fetchErr);
       }
-      // Send KYC confirmation email after successful upload & accept
       try {
         await sendKycConfirmationEmail({
           name: appData?.fullName || '',
@@ -63,13 +71,12 @@ export default function KycPage() {
           email: appData?.email || '',
         });
       } catch (emailErr) {
-        // Optionally log or show error, but don't block navigation
-        console.error('Failed to send KYC confirmation email:', emailErr);
+        Honeybadger.notify(emailErr);
       }
       navigate('/thank-you');
     } catch (err) {
-      setError('Failed to upload and accept offer.');
-    } finally {
+      Honeybadger.notify(err);
+      setError('Failed to upload and accept offer. ' + (err?.message || ''));
       setLoading(false);
     }
   };

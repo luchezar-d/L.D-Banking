@@ -7,7 +7,42 @@ import { publishLoanEvent } from '../../utils/awsEventBridge.js';
 import Honeybadger from '@honeybadger-io/js';
 
 export const uploadKycDocument = async (req, res) => {
-    // ...existing code from original file...
+  try {
+    const { id } = req.params;
+    const { nationality, isPublicFigure, additionalInfo } = req.body;
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded.' });
+    }
+    
+    const fileName = `kyc/${id}/${Date.now()}_${req.file.originalname}`;
+    const uploadParams = {
+      Bucket: process.env.AWS_S3_BUCKET,
+      Key: fileName,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+    };
+    await s3.send(new PutObjectCommand(uploadParams));
+    const kycDocumentUrl = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
+    
+    const app = await Application.findByIdAndUpdate(
+      id,
+      {
+        kycDocumentUrl,
+        nationality,
+        isPublicFigure,
+        additionalInfo,
+        kycResult: 'pending',
+      },
+      { new: true }
+    );
+    if (!app) {
+      return res.status(404).json({ error: 'Application not found.' });
+    }
+    res.json({ message: 'KYC document uploaded.', app });
+  } catch (err) {
+    Honeybadger.notify(err);
+    res.status(500).json({ error: 'Failed to upload KYC document.' });
+  }
 };
 
 export const applyForProduct = async (req, res) => {
@@ -42,7 +77,23 @@ export const ping = (req, res) => {
 };
 
 export const acceptOffer = async (req, res) => {
-    // ...existing code from original file...
+  try {
+    const { id } = req.params;
+    
+    const app = await Application.findByIdAndUpdate(
+      id,
+      { status: 'Offer Accepted', kycResult: 'pending' },
+      { new: true }
+    );
+    if (!app) {
+      return res.status(404).json({ error: 'Application not found.' });
+    }
+    
+    res.json({ message: 'Offer accepted.', app });
+  } catch (err) {
+    Honeybadger.notify(err);
+    res.status(500).json({ error: 'Failed to accept offer.' });
+  }
 };
 
 export const getApplicationById = async (req, res) => {
@@ -58,9 +109,9 @@ export const getApplicationById = async (req, res) => {
 };
 
 export const deleteApplication = async (req, res) => {
-    // ...existing code from original file...
+    
 };
 
 export const deleteAllApplications = async (req, res) => {
-    // ...existing code from original file...
+    
 };

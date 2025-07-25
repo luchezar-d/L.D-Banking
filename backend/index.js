@@ -12,17 +12,17 @@ app.use(cors());
 app.use('/api/auth', authRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
+  .then(() => {/* Connected to MongoDB */})
+  .catch(() => {/* MongoDB connection error */});
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 5001;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  /* Server running */
 });
 
 mongoose.connection.on('connected', () => {
-  console.log('MongoDB connection established');
+  /* MongoDB connection established */
 });
-mongoose.connection.on('error', (err) => {
-  console.error('MongoDB connection error:', err);
+mongoose.connection.on('error', () => {
+  /* MongoDB connection error */
 });
