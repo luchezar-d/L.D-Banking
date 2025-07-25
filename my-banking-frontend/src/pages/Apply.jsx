@@ -32,14 +32,14 @@ export default function Apply() {
       
       setMessage('Application submitted!');
       
-      if (res && res.data && res.data.app && res.data.app._id) {
-        await sendInitialOfferEmail({
-          name: form.fullName,
-          product: form.productType,
-          offerLink: `https://l-d-banking.onrender.com/offer/${res.data.app._id}`,
-          email: form.email,
-        });
-      }
+      // if (res && res.data && res.data.app && res.data.app._id) {
+      //   await sendInitialOfferEmail({
+      //     name: form.fullName,
+      //     product: form.productType,
+      //     offerLink: `https://l-d-banking.onrender.com/offer/${res.data.app._id}`,
+      //     email: form.email,
+      //   });
+      // }
     } catch (err) {
       setMessage('Failed to submit application');
       
