@@ -1,31 +1,48 @@
+
 # L.D Banking App
 
-A full-stack banking application with:
-- **Frontend:** React (Vite) + Tailwind CSS
+>A full-stack banking application for modern banking products, with robust error monitoring, cloud integrations, and a seamless user experience.
+
+
+## Tech Stack
+- **Frontend:** React (Vite), Tailwind CSS
 - **Backend:** Node.js, Express, MongoDB (Mongoose)
-- **Cloud Integration:** AWS EventBridge for event publishing
-- **Error Monitoring:** Honeybadger for backend error tracking
+- **Cloud:** AWS S3 (KYC uploads), AWS EventBridge (event publishing)
+- **Error Monitoring:** Honeybadger (backend & frontend)
 - **Other Integrations:** Salesforce, KYC, Email notifications
 
 ---
 
-## Features
-- Modern, responsive UI/UX with fixed navbar, full-width header, mobile-friendly layouts, and a gradient footer.
-- Users can apply for banking products (Loan, Flash Credit, Credit Card) via a web form.
-- All applications are stored in MongoDB with required fields: `fullName`, `email`, `city`, `postalCode`, `productType`, `amount`, `status`, `kycResult`, `createdAt`.
-- Backend validates all required fields and always sets status to `Offer Made` on creation.
-- Application events are published to AWS EventBridge.
-- Salesforce and KYC integrations (mocked or real, depending on your setup).
-- Email notifications sent on offer creation.
-- **Honeybadger integration:** All backend errors are automatically reported to Honeybadger, including request context (body, query, params, endpoint, and IDs) for easier debugging.
-- **Amazon S3 KYC Document Upload:**
-    - Users can upload KYC documents (images, PDFs) from the frontend KYC page.
-    - Files are uploaded to a private S3 bucket using the AWS SDK v3.
-    - The S3 file URL is stored in the `kycDocumentUrl` field of the Application in MongoDB.
-    - All upload errors are logged to Honeybadger with full context for debugging.
-    - S3 bucket name and credentials are configured via `.env`.
+## User Flow Chart
+
+```mermaid
+graph TD
+    A[User visits site] --> B[Apply for product]
+    B --> C[Application stored in MongoDB]
+    C --> D[Offer made]
+    D --> E[User accepts offer]
+    E --> F[KYC document upload]
+    F --> G[S3 upload & MongoDB update]
+    G --> H[Confirmation email sent]
+    H --> I[Thank You page]
+```
 
 ---
+
+## Features
+- Modern, responsive UI/UX (navbar, header, mobile layouts, gradient footer)
+- Users apply for Loan, Flash Credit, or Credit Card
+- Secure authentication and application management
+- KYC document upload (image/PDF) to S3
+- Offer acceptance and confirmation flows
+- All major flows: login, apply, offer, KYC, completion
+- Robust error handling and Honeybadger reporting (backend & frontend)
+- Environment compatibility for local and production (Render)
+- All API errors and timeouts reported to Honeybadger
+
+---
+---
+
 
 ## Project Structure
 ```
@@ -49,6 +66,11 @@ my-banking-backend/
 └── my-banking-frontend/
     ├── src/
     │   ├── pages/Apply.jsx
+    │   ├── pages/Offer.jsx
+    │   ├── pages/KycPage.jsx
+    │   ├── pages/Login.jsx
+    │   ├── pages/Register.jsx
+    │   ├── pages/Applications.jsx
     │   ├── api/applications.js
     │   └── ...
     ├── tailwind.config.cjs
@@ -58,6 +80,7 @@ my-banking-backend/
 ```
 
 ---
+
 
 ## Environment Variables
 
@@ -85,6 +108,7 @@ VITE_PROXY_API=http://localhost:5001
 
 ---
 
+
 ## Setup & Run
 
 ### Prerequisites
@@ -93,13 +117,13 @@ VITE_PROXY_API=http://localhost:5001
 - AWS account (EventBridge, S3)
 
 ### 1. Clone the repo
-```
+```bash
 git clone https://github.com/luchezar-d/L.D-Banking.git
 cd L.D-Banking/my-banking-backend
 ```
 
 ### 2. Install dependencies
-```
+```bash
 npm install
 cd my-banking-frontend
 npm install
@@ -109,17 +133,18 @@ npm install
 - See above for `.env` examples for backend and frontend.
 
 ### 4. Start the backend
-```
+```bash
 npm start
 ```
 
 ### 5. Start the frontend (local dev)
-```
+```bash
 cd my-banking-frontend
 npm run dev
 ```
 
 ---
+
 
 ## API Endpoints
 - `POST /api/apply` — Submit a new application
@@ -130,11 +155,13 @@ npm run dev
 
 ---
 
+
 ## AWS EventBridge
 - Publishes a `LoanOfferMade` event for every new application.
 - Event includes all application fields and is sent to the `LoanEventsBus`.
 
 ---
+
 
 ## Frontend Features
 - Responsive, modern UI/UX with:
@@ -148,11 +175,13 @@ npm run dev
 
 ---
 
+
 ## Error Monitoring (Honeybadger)
-- All backend errors are reported to Honeybadger with full request context
+- All backend and frontend errors are reported to Honeybadger with full request context
 - Add your `HONEYBADGER_API_KEY` to backend `.env`
 
 ---
+
 
 ## Deployment (Render)
 - Add all required environment variables in Render dashboard for both frontend and backend
@@ -162,6 +191,7 @@ npm run dev
 
 ---
 
+
 ## Contributing
 1. Fork the repo
 2. Create a feature branch (`git checkout -b feature/your-feature`)
@@ -170,6 +200,7 @@ npm run dev
 5. Open a Pull Request
 
 ---
+
 
 ## License
 MIT

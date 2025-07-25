@@ -37,11 +37,11 @@ app.get('*', (req, res) => {
 });
 
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('Connected to MongoDB'))
-    .catch(err => console.error('MongoDB connection error:', err));
+    .then(() => {/* Connected to MongoDB */})
+    .catch(() => {/* MongoDB connection error */});
 
 
 app.use(Honeybadger.errorHandler);
 
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {/* Server running */});

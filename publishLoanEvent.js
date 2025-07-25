@@ -30,8 +30,8 @@ const input = {
   try {
     const command = new PutEventsCommand(input);
     const response = await client.send(command);
-    console.log("✅ Published event:", JSON.stringify(response, null, 2));
+    // ...removed debug log...
   } catch (err) {
-    console.error("❌ Failed to publish event:", err);
+    
   }
 })();

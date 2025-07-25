@@ -19,7 +19,7 @@ export default function Offer() {
         setLoading(false);
       })
       .catch(err => {
-        console.error('Error loading offer:', err);
+        
         setError(
           err?.response?.data?.message ||
           err?.message ||

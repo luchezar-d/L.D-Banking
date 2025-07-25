@@ -14,7 +14,7 @@ export default function Applications() {
         setLoading(false);
       })
       .catch(err => {
-        console.error('❌ Failed to fetch applications:', err);
+        
         setLoading(false);
       });
   };
