@@ -25,10 +25,11 @@ export async function publishLoanEvent(detailType, data) {
   try {
     const command = new PutEventsCommand(input);
     const response = await client.send(command);
-    // ...removed debug log...
+    console.log("📤 Sent event to EventBridge:", JSON.stringify(input, null, 2));
+    console.log("📥 Response from EventBridge:", JSON.stringify(response, null, 2));
     return response;
   } catch (err) {
-    
+    console.error("❌ Error publishing event to EventBridge:", err);
     throw err;
   }
 }

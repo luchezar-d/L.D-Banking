@@ -53,8 +53,28 @@ export const applyForProduct = async (req, res) => {
     }
     const app = new Application({ fullName, email, city, postalCode, productType, amount });
     await app.save();
+    console.log("✅ Application saved to MongoDB:", app._id);
+    const eventPayload = {
+      applicationId: app._id,
+      fullName: app.fullName,
+      email: app.email,
+      city: app.city,
+      postalCode: app.postalCode,
+      productType: app.productType,
+      amount: app.amount,
+      status: app.status || 'Offer Made',
+      createdAt: app.createdAt,
+    };
+    try {
+      const result = await publishLoanEvent('LoanOfferMade', eventPayload);
+      console.log("✅ Event published to EventBridge:", JSON.stringify(result));
+    } catch (eventErr) {
+      Honeybadger.notify(eventErr);
+      console.error("❌ Error publishing event to EventBridge:", eventErr);
+    }
     res.status(201).json({ message: 'Application submitted!', app });
   } catch (err) {
+    console.error("❌ Error saving application or publishing event:", err);
     res.status(500).json({ error: 'Failed to submit application.' });
   }
 };
@@ -109,9 +129,25 @@ export const getApplicationById = async (req, res) => {
 };
 
 export const deleteApplication = async (req, res) => {
-    
+  try {
+    const { id } = req.params;
+    const result = await Application.findByIdAndDelete(id);
+    if (!result) {
+      return res.status(404).json({ error: 'Application not found.' });
+    }
+    res.json({ message: 'Application deleted.' });
+  } catch (err) {
+    Honeybadger.notify(err);
+    res.status(500).json({ error: 'Failed to delete application.' });
+  }
 };
 
 export const deleteAllApplications = async (req, res) => {
-    
+  try {
+    await Application.deleteMany({});
+    res.json({ message: 'All applications deleted.' });
+  } catch (err) {
+    Honeybadger.notify(err);
+    res.status(500).json({ error: 'Failed to delete all applications.' });
+  }
 };
