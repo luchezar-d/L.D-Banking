@@ -68,29 +68,61 @@ export default function Applications() {
             <table className="w-full min-w-[700px] text-left rounded-lg overflow-hidden bg-transparent">
               <thead>
                 <tr className="bg-[#f3f3fa] text-gray-700">
-                  <th className="py-3 px-4 font-semibold">Full Name</th>
+                  <th className="py-3 px-4 font-semibold">Company</th>
+                  <th className="py-3 px-4 font-semibold">Contact</th>
                   <th className="py-3 px-4 font-semibold">Email</th>
                   <th className="py-3 px-4 font-semibold">Product</th>
-                  <th className="py-3 px-4 font-semibold">Amount</th>
-                  <th className="py-3 px-4 font-semibold">City</th>
-                  <th className="py-3 px-4 font-semibold">Postal Code</th>
+                  <th className="py-3 px-4 font-semibold">Loan Amount</th>
+                  <th className="py-3 px-4 font-semibold">Term</th>
+                  <th className="py-3 px-4 font-semibold">Rate</th>
+                  <th className="py-3 px-4 font-semibold">Status</th>
+                  <th className="py-3 px-4 font-semibold">Salesforce</th>
                   <th className="py-3 px-4 font-semibold text-center">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {apps.length === 0 ? (
                   <tr>
-                    <td colSpan="7" className="text-center text-gray-400 py-8">No applications found.</td>
+                    <td colSpan="10" className="text-center text-gray-400 py-8">No applications found.</td>
                   </tr>
                 ) : (
                   apps.map(app => (
                     <tr key={app._id} className="border-b border-gray-100 hover:bg-[#f3f3fa] transition">
-                      <td className="py-3 px-4 text-gray-900">{app.fullName}</td>
-                      <td className="py-3 px-4 text-gray-900">{app.email}</td>
-                      <td className="py-3 px-4 text-gray-900">{app.productType}</td>
-                      <td className="py-3 px-4 text-gray-900">{app.amount}</td>
-                      <td className="py-3 px-4 text-gray-900">{app.city}</td>
-                      <td className="py-3 px-4 text-gray-900">{app.postalCode}</td>
+                      <td className="py-3 px-4 text-gray-900">
+                        <div className="font-medium">{app.account?.name || 'N/A'}</div>
+                        <div className="text-sm text-gray-500">{app.account?.industry || ''}</div>
+                      </td>
+                      <td className="py-3 px-4 text-gray-900">
+                        {app.contact?.firstName || ''} {app.contact?.lastName || ''}
+                      </td>
+                      <td className="py-3 px-4 text-gray-900">{app.contact?.email || 'N/A'}</td>
+                      <td className="py-3 px-4 text-gray-900">{app.productType || 'N/A'}</td>
+                      <td className="py-3 px-4 text-gray-900">
+                        ${app.loan?.amount?.toLocaleString() || 'N/A'}
+                      </td>
+                      <td className="py-3 px-4 text-gray-900">{app.loan?.termMonths || 'N/A'} months</td>
+                      <td className="py-3 px-4 text-gray-900">{app.loan?.interestRate || 'N/A'}%</td>
+                      <td className="py-3 px-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          app.status === 'Applied' ? 'bg-blue-100 text-blue-800' :
+                          app.status === 'Offer Made' ? 'bg-yellow-100 text-yellow-800' :
+                          app.status === 'Offer Accepted' ? 'bg-green-100 text-green-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {app.status || 'Applied'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          app.salesforceSyncStatus === 'success' ? 'bg-green-100 text-green-800' :
+                          app.salesforceSyncStatus === 'failed' ? 'bg-red-100 text-red-800' :
+                          'bg-yellow-100 text-yellow-800'
+                        }`}>
+                          {app.salesforceSyncStatus === 'success' ? '✓ Synced' :
+                           app.salesforceSyncStatus === 'failed' ? '✗ Failed' :
+                           '⏳ Pending'}
+                        </span>
+                      </td>
                       <td className="py-3 px-4 text-center">
                         <button
                           onClick={() => handleDelete(app._id)}
