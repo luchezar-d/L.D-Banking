@@ -50,23 +50,45 @@ export default function Offer() {
             <div className="space-y-6">
               <div className="flex items-center">
                 <span className="font-semibold text-gray-700 text-base md:text-lg">Applicant:</span>
-                <span className="ml-2 text-lg md:text-xl text-purple-500 font-medium">{app.fullName}</span>
+                <span className="ml-2 text-lg md:text-xl text-purple-500 font-medium">
+                  {app.contact?.firstName && app.contact?.lastName 
+                    ? `${app.contact.firstName} ${app.contact.lastName}` 
+                    : 'N/A'}
+                </span>
               </div>
               <div className="flex items-center">
                 <span className="font-semibold text-gray-700 text-base md:text-lg">Email:</span>
-                <span className="ml-2 text-lg md:text-xl text-purple-500 font-medium">{app.email}</span>
+                <span className="ml-2 text-lg md:text-xl text-purple-500 font-medium">{app.contact?.email || 'N/A'}</span>
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700 text-base md:text-lg">Company:</span>
+                <span className="ml-2 text-lg md:text-xl text-purple-500 font-medium">{app.account?.name || 'N/A'}</span>
               </div>
               <div className="flex items-center">
                 <span className="font-semibold text-gray-700 text-base md:text-lg">Product:</span>
-                <span className="ml-2 text-lg md:text-xl text-purple-500 font-medium">{app.productType}</span>
+                <span className="ml-2 text-lg md:text-xl text-purple-500 font-medium">{app.productType || 'N/A'}</span>
               </div>
               <div className="flex items-center">
                 <span className="font-semibold text-gray-700 text-base md:text-lg">Amount:</span>
-                <span className="ml-2 text-lg md:text-xl text-purple-500 font-medium">${app.amount}</span>
+                <span className="ml-2 text-lg md:text-xl text-purple-500 font-medium">
+                  {app.loan?.amount ? `$${app.loan.amount.toLocaleString()}` : 'N/A'}
+                </span>
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700 text-base md:text-lg">Term:</span>
+                <span className="ml-2 text-lg md:text-xl text-purple-500 font-medium">
+                  {app.loan?.termMonths ? `${app.loan.termMonths} months` : 'N/A'}
+                </span>
+              </div>
+              <div className="flex items-center">
+                <span className="font-semibold text-gray-700 text-base md:text-lg">Interest Rate:</span>
+                <span className="ml-2 text-lg md:text-xl text-purple-500 font-medium">
+                  {app.loan?.interestRate ? `${app.loan.interestRate}%` : 'N/A'}
+                </span>
               </div>
               <div className="flex items-center">
                 <span className="font-semibold text-gray-700 text-base md:text-lg">Status:</span>
-                <span className="ml-2 text-lg md:text-xl text-purple-500 font-medium">{app.status}</span>
+                <span className="ml-2 text-lg md:text-xl text-purple-500 font-medium">{app.status || 'Applied'}</span>
               </div>
             </div>
             <button

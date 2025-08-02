@@ -79,6 +79,20 @@ export default function Apply() {
       const res = await applyForProduct(structuredPayload);
       setMessage('Application submitted successfully! Your data has been saved to our database and synced with Salesforce.');
       
+      // Send confirmation email to applicant
+      try {
+        await sendInitialOfferEmail({
+          name: `${form.firstName} ${form.lastName}`,
+          product: form.productType,
+          offerLink: `${window.location.origin}/offer/${res.data.app._id}`, // Link to the specific offer
+          email: form.email
+        });
+        console.log('✅ Confirmation email sent successfully');
+      } catch (emailErr) {
+        console.error('⚠️ Failed to send confirmation email:', emailErr);
+        // Don't fail the entire submission if email fails
+      }
+      
       // Optional: Reset form after successful submission
       setForm({
         companyName: '',
