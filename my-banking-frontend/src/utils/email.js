@@ -22,3 +22,11 @@ export const sendKycConfirmationEmail = ({ name, product, email }) =>
     product_name: product,
     to_email: email,
   });
+
+export const sendOfferAcceptanceEmail = ({ name, product, amount, email }) =>
+  sendEmail(import.meta.env.VITE_EMAILJS_ACCEPTANCE_TEMPLATE_ID, {
+    user_name: name,
+    product_name: product,
+    loan_amount: amount,
+    to_email: email,
+  });

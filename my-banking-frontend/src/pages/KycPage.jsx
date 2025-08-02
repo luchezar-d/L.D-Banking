@@ -4,7 +4,7 @@ import { getApplicationById } from '../api/applications';
 import Footer from '../components/Footer';
 import { nationalities } from '../utils/nationalities';
 import { useParams, useNavigate } from 'react-router-dom';
-import { sendKycConfirmationEmail } from '../utils/email';
+import { sendKycConfirmationEmail, sendOfferAcceptanceEmail } from '../utils/email';
 
 export default function KycPage() {
   const { id } = useParams();
@@ -64,13 +64,35 @@ export default function KycPage() {
       } catch (fetchErr) {
         Honeybadger.notify(fetchErr);
       }
+      
+      // Send offer acceptance email
+      try {
+        await sendOfferAcceptanceEmail({
+          name: appData?.contact?.firstName && appData?.contact?.lastName 
+            ? `${appData.contact.firstName} ${appData.contact.lastName}` 
+            : 'Valued Customer',
+          product: appData?.productType || 'Banking Product',
+          amount: appData?.loan?.amount || 'N/A',
+          email: appData?.contact?.email || '',
+        });
+        console.log('✅ Offer acceptance email sent successfully');
+      } catch (emailErr) {
+        console.error('⚠️ Failed to send offer acceptance email:', emailErr);
+        Honeybadger.notify(emailErr);
+      }
+      
+      // Send KYC confirmation email  
       try {
         await sendKycConfirmationEmail({
-          name: appData?.fullName || '',
-          product: appData?.productType || '',
-          email: appData?.email || '',
+          name: appData?.contact?.firstName && appData?.contact?.lastName 
+            ? `${appData.contact.firstName} ${appData.contact.lastName}` 
+            : 'Valued Customer',
+          product: appData?.productType || 'Banking Product',
+          email: appData?.contact?.email || '',
         });
+        console.log('✅ KYC confirmation email sent successfully');
       } catch (emailErr) {
+        console.error('⚠️ Failed to send KYC confirmation email:', emailErr);
         Honeybadger.notify(emailErr);
       }
       navigate('/thank-you');
